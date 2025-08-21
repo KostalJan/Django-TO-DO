@@ -1,0 +1,179 @@
+/* ===== Base ===== */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.5;
+    color: #222;
+    background: #fff;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    display: inline-block;
+    padding: .45rem .75rem;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    background: #f6f6f6;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #eee;
+}
+
+.inline {
+    display: inline-block;
+}
+
+/* ===== Layout  ===== */
+.container {
+    max-width: 720px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* centruje title + button */
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.toolbar__title {
+    font-weight: 700;
+    font-size: 1.75rem;
+    text-align: center;
+}
+
+/* ===== Forms ===== */
+#new_task_title {
+    text-align: center;
+}
+
+form.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    justify-content: center;
+
+    /* klíčové pro centrování bloku */
+    width: fit-content;
+    /* shrink-to-fit podle obsahu */
+    max-width: 100%;
+    /* ať to nepřetéká na úzkých displejích */
+    margin: 1rem auto;
+    /* vycentruje vůči stránce */
+}
+
+form.filters input,
+form.filters select {
+    padding: .45rem .6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 12ch;
+}
+
+form.filters .btn {
+    border-color: #aaa;
+}
+
+form {
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+/* formulář zúžit a vycentrovat */
+form p {
+    margin: .75rem 0;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: .25rem;
+    font-weight: 600;
+}
+
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: .5rem .6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* ===== Table ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+th,
+td {
+    padding: .6rem .5rem;
+    border-bottom: 1px solid #e6e6e6;
+    text-align: left;
+}
+
+thead th {
+    font-weight: 700;
+    background: #fafafa;
+}
+
+tbody tr:hover {
+    background: #fcfcfc;
+}
+
+tbody tr:nth-child(even) {
+    background: #fdfdfd;
+}
+
+/* Akční sloupec vycentrovat */
+thead th:last-child,
+tbody td:last-child {
+    text-align: center;
+}
+
+/* ===== Pager (doprostřed) ===== */
+.pager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    margin-top: 1rem;
+}
+
+.pager .btn {
+    padding: .35rem .6rem;
+}
+
+/* ===== Responsivita  ===== */
+@media (max-width: 480px) {
+    .container {
+        margin: 2rem auto;
+    }
+
+    .toolbar {
+        flex-wrap: wrap;
+    }
+}

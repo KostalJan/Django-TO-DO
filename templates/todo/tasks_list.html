@@ -1,0 +1,63 @@
+{% extends "todo/base.html" %}
+{% block title %}Úkoly{% endblock %}
+
+{% block content %}
+<form class="filters" method="get" action="">
+  <select name="status">
+    <option value="">-- stav --</option>
+    <option value="todo" {% if filters.status == "todo" %}selected{% endif %}>To Do</option>
+    <option value="in_progress" {% if filters.status == "in_progress" %}selected{% endif %}>In Progress</option>
+    <option value="done" {% if filters.status == "done" %}selected{% endif %}>Done</option>
+  </select>
+  <input type="text" name="category" placeholder="Kategorie" value="{{ filters.category }}">
+  <input type="text" name="search" placeholder="Hledat v titulku/popisu" value="{{ filters.search }}">
+  <button class="btn" type="submit">Filtrovat</button>
+  <a class="btn" href="{% url 'tasks_list' %}">Reset</a>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Titulek</th>
+      <th>Stav</th>
+      <th>Kategorie</th>
+      <th>Vytvořeno</th>
+      <th>Hotovo</th>
+      <th>Akce</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in page_obj.object_list %}
+      <tr>
+        <td>{{ task.title }}</td>
+        <td>{{ task.get_status_display }}</td>
+        <td>{{ task.category|default:"—" }}</td>
+        <td>{{ task.created_at|date:"Y-m-d H:i" }}</td>
+        <td>{% if task.completed_at %}{{ task.completed_at|date:"Y-m-d H:i" }}{% else %}—{% endif %}</td>
+        <td>
+          {% if task.status != "done" %}
+          <form class="inline" method="post" action="{% url 'task_mark_done' task.pk %}">
+            {% csrf_token %}
+            <button class="btn" type="submit">Označit hotovo</button>
+          </form>
+          {% else %}
+            ✓
+          {% endif %}
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="6">Žádné úkoly.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div style="margin-top:1rem;">
+  {% if page_obj.has_previous %}
+    <a class="btn" href="?page={{ page_obj.previous_page_number }}&status={{ filters.status }}&category={{ filters.category }}&search={{ filters.search }}">← Předchozí</a>
+  {% endif %}
+  <span>Stránka {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}
+    <a class="btn" href="?page={{ page_obj.next_page_number }}&status={{ filters.status }}&category={{ filters.category }}&search={{ filters.search }}">Další →</a>
+  {% endif %}
+</div>
+{% endblock %}

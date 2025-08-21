@@ -1,0 +1,18 @@
+{% load static %}
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}To-Do{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'todo/styles.css' %}" rel="stylesheet">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="toolbar">
+    <h1><a href="{% url 'tasks_list' %}" style="text-decoration:none;color:inherit">To-Do</a></h1>
+    <a class="btn" href="{% url 'task_create' %}">+ Nový úkol</a>
+  </header>
+  {% block content %}{% endblock %}
+</body>
+</html>

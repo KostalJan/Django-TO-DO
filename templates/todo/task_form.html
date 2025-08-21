@@ -1,0 +1,12 @@
+{% extends "todo/base.html" %}
+{% block title %}Nový úkol{% endblock %}
+
+{% block content %}
+<h2 id="new_task_title">Nový úkol</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn" type="submit">Uložit</button>
+  <a class="btn" href="{% url 'tasks_list' %}">Zpět</a>
+</form>
+{% endblock %}

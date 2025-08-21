@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Task
 from django.utils import timezone
+from .services import apply_status_effects
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -10,19 +11,21 @@ class TaskSerializer(serializers.ModelSerializer):
         read_only_fields = ["created_at", "completed_at"]
 
     def update(self, instance, validated_data):
-        #změna nastavení completed_at v závsislost na status
-        old_status = instance.status
-        new_status = validated_data.get("status", old_status)
+        #při update vyjmeme z Tasku status a nastavíme ho dle service funkce
+        new_status = validated_data.pop("status", instance.status)
+        apply_status_effects(instance, new_status)
 
-        if new_status == "done" and (instance.completed_at is None):
-            validated_data["completed_at"] = timezone.now()
-        elif new_status != "done" and (instance.completed_at is not None):
-            validated_data["completed_at"] = None
+        # ostatní pole se klasicky nastaví
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
 
-        return super().update(instance, validated_data)
+        instance.save()
+        return instance
 
     def create(self, validated_data):
-        # pokud se vytváří task rovnou se statusem "done", nastaví se completed_at
-        if validated_data.get("status") == "done" and not validated_data.get("completed_at"):
-            validated_data["completed_at"] = timezone.now()
-        return super().create(validated_data)
+        # při vytváření se také status nastavuje dle service funkce
+        new_status = validated_data.pop("status", "todo")
+        task = Task(**validated_data)
+        apply_status_effects(task, new_status)
+        task.save()
+        return task
